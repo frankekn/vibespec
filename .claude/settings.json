@@ -1,0 +1,43 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": ".*(?:add|implement|create|build|develop|make).*(?:feature|functionality|component|system|api|endpoint).*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/enforce-specs.sh"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": {
+          "tools": ["Edit", "Write", "MultiEdit"],
+          "paths": "!specs/**"
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/check-workflow.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": {
+          "tools": ["Edit", "Write", "MultiEdit"],
+          "paths": "**/*.{js,jsx,ts,tsx,py,go,java,rs,rb,php,swift,kt,scala,c,cpp,h,hpp,cs}"
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/update-docs.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
