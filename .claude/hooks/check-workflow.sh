@@ -1,5 +1,5 @@
 #!/bin/bash
-# Check if workflow is being followed
+# Check if workflow is being followed - BLOCKING VERSION
 
 # Check if WORKFLOW.md exists
 if [ ! -f "WORKFLOW.md" ]; then
@@ -20,6 +20,17 @@ fi
 
 # Check if we're editing code without specs
 if [[ "$TOOL_PATH" =~ \.(js|jsx|ts|tsx|py|go|java|rs|rb|php|swift|kt|scala|c|cpp|h|hpp|cs)$ ]]; then
+  
+  # Skip if editing spec files
+  if [[ "$TOOL_PATH" =~ specs/ ]]; then
+    exit 0
+  fi
+  
+  # Skip if it's a test file
+  if [[ "$TOOL_PATH" =~ (test|spec|__tests__|\.test\.|\.spec\.) ]]; then
+    exit 0
+  fi
+  
   # Try to determine feature name from file path or branch
   FEATURE_CONTEXT=""
   
@@ -31,9 +42,53 @@ if [[ "$TOOL_PATH" =~ \.(js|jsx|ts|tsx|py|go|java|rs|rb|php|swift|kt|scala|c|cpp
     fi
   fi
   
+  # Check if any specs exist
+  if [ ! -d "specs" ] || [ -z "$(ls -A specs/ 2>/dev/null)" ]; then
+    echo "🛑 CODING WITHOUT SPECS DETECTED"
+    echo "❌ Cannot edit code files without approved specifications"
+    echo "📋 Create specs/{feature}/requirements.md first"
+    echo "📋 Follow the Vibespec workflow before coding"
+    exit 1
+  fi
+  
+  # If we have a feature context, check if specs exist for it
   if [ -n "$FEATURE_CONTEXT" ] && [ ! -d "specs/$FEATURE_CONTEXT" ]; then
-    echo "📋 Reminder: Working on feature '$FEATURE_CONTEXT' without specs?"
-    echo "   Consider creating specs/$FEATURE_CONTEXT/ first"
+    echo "🛑 FEATURE BRANCH WITHOUT SPECS"
+    echo "❌ Working on feature '$FEATURE_CONTEXT' without specifications"
+    echo "📋 Create specs/$FEATURE_CONTEXT/requirements.md first"
+    echo "📋 Follow the Vibespec workflow before coding"
+    exit 1
+  fi
+  
+  # Check if there are incomplete specs
+  if [ -d "specs" ]; then
+    for spec_dir in specs/*/; do
+      if [ -d "$spec_dir" ]; then
+        feature_name=$(basename "$spec_dir")
+        
+        # Check if all required files exist
+        if [ ! -f "$spec_dir/requirements.md" ]; then
+          echo "🛑 INCOMPLETE SPECS: $feature_name"
+          echo "❌ Missing requirements.md for feature '$feature_name'"
+          echo "📋 Complete specs/$feature_name/requirements.md first"
+          exit 1
+        fi
+        
+        if [ ! -f "$spec_dir/design.md" ]; then
+          echo "🛑 INCOMPLETE SPECS: $feature_name"
+          echo "❌ Missing design.md for feature '$feature_name'"
+          echo "📋 Complete specs/$feature_name/design.md first"
+          exit 1
+        fi
+        
+        if [ ! -f "$spec_dir/tasks.md" ]; then
+          echo "🛑 INCOMPLETE SPECS: $feature_name"
+          echo "❌ Missing tasks.md for feature '$feature_name'"
+          echo "📋 Complete specs/$feature_name/tasks.md first"
+          exit 1
+        fi
+      fi
+    done
   fi
 fi
 

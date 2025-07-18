@@ -4,16 +4,21 @@ A specs-first development workflow for Claude Code that ensures quality through 
 
 ## 🚀 Quick Start
 
-### Installation
+### Installation Options
 
-Clone and install:
+**Option 1: One-Command Install (Recommended)**
+```bash
+curl -sSL https://raw.githubusercontent.com/frankekn/vibespec/main/remote-install.sh | bash
+```
+
+**Option 2: Git Clone Install**
 ```bash
 git clone https://github.com/frankekn/vibespec.git
 cd vibespec
 ./install.sh /path/to/your/project
 ```
 
-Or manually copy files:
+**Option 3: Manual Install**
 ```bash
 cp vibespec/{WORKFLOW.md,workflow-rules.md} your-project/
 cp -r vibespec/.claude your-project/
@@ -21,10 +26,12 @@ cp -r vibespec/.claude your-project/
 
 ## 📋 What It Does
 
+- **Enforces** specs-first development workflow for Claude Code
 - **Appends** workflow rules to your existing CLAUDE.md (non-destructive)
 - **Adds** WORKFLOW.md with the complete 6-step process
-- **Installs** hooks that enforce specs-first development
+- **Installs** hooks that **BLOCK** coding without approved specs
 - **Creates** specs/ directory for your requirements and designs
+- **Ensures** Claude cannot skip workflow steps
 
 ## 🔄 The Workflow
 
@@ -37,7 +44,7 @@ cp -r vibespec/.claude your-project/
 
 ## 🎯 How It Works
 
-After installation, Claude will follow this pattern:
+After installation, Claude **MUST** follow this enforced pattern:
 
 ```
 You: "Add user authentication"
@@ -48,8 +55,16 @@ let me first understand your requirements:
 - What are the user roles?
 - Any specific security requirements?
 
-After clarifying, I'll create specs/user-authentication/requirements.md"
+After clarifying, I'll create specs/user-authentication/requirements.md
+
+⏳ I will then WAIT for your approval before proceeding to design.md"
 ```
+
+**Key Enforcement Points:**
+- Claude **CANNOT** skip to coding without creating specs
+- Claude **MUST** wait for approval between each step
+- Hooks **BLOCK** actions that violate the workflow
+- All 3 spec files (requirements/design/tasks) are **REQUIRED** before coding
 
 ## 🔧 For Existing Projects
 
@@ -73,15 +88,31 @@ your-project/
 ## 🧪 Test It Out
 
 After installation, try these commands:
-- "I want to add a search feature" → Creates specs first
-- "Just quickly add a button" → Still creates minimal specs
-- "Implement the login from specs" → Follows the plan
+- "I want to add a search feature" → **ENFORCED:** Creates specs first
+- "Just quickly add a button" → **ENFORCED:** Still creates minimal specs
+- "Implement the login from specs" → **ENFORCED:** Only works with approved specs
+- "Emergency bypass for critical bug" → **ALLOWED:** Bypasses workflow
+
+**What happens if you try to skip workflow:**
+```bash
+You: "Just add some code to fix this"
+Claude: 🛑 VIBESPEC WORKFLOW ENFORCEMENT
+❌ Cannot proceed without following specs-first workflow!
+```
 
 ## 📚 Documentation
 
 - [Getting Started](docs/GETTING_STARTED.md) - Detailed setup guide
-- [Hooks Guide](docs/HOOKS_GUIDE.md) - Understanding the hook system
+- [WORKFLOW.md](WORKFLOW.md) - Complete workflow documentation
+- [Hooks Guide](docs/HOOKS_GUIDE.md) - Understanding the enforcement system
 - [Customization](docs/CUSTOMIZATION.md) - Adapting to your needs
+
+## 🔧 Installation Time
+
+- **One-command install**: < 30 seconds
+- **First feature spec**: < 5 minutes
+- **Learning curve**: Works immediately, no manual required
+- **Enforcement**: Automatic, no configuration needed
 
 ## 🤝 Contributing
 

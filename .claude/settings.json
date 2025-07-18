@@ -9,6 +9,15 @@
             "command": "./.claude/hooks/enforce-specs.sh"
           }
         ]
+      },
+      {
+        "matcher": ".*(?:create|write|make).*(?:design\\.md|tasks\\.md).*|.*(?:implement|code|start|begin).*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/approval-gate.sh"
+          }
+        ]
       }
     ],
     "PreToolUse": [

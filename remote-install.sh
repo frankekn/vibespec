@@ -1,6 +1,6 @@
 #!/bin/bash
-# Vibespec Installation Script
-# https://github.com/frankekn/vibespec
+# Vibespec Remote Installation Script
+# Usage: curl -sSL https://raw.githubusercontent.com/frankekn/vibespec/main/remote-install.sh | bash
 
 set -e
 
@@ -13,10 +13,10 @@ NC='\033[0m' # No Color
 
 # Get target directory (default to current directory)
 TARGET_DIR="${1:-.}"
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_URL="https://raw.githubusercontent.com/frankekn/vibespec/main"
 
 echo -e "${BLUE}╔══════════════════════════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║                    VIBESPEC INSTALLER                        ║${NC}"
+echo -e "${BLUE}║              VIBESPEC REMOTE INSTALLER                       ║${NC}"
 echo -e "${BLUE}║              Specs-First Workflow for Claude                 ║${NC}"
 echo -e "${BLUE}╚══════════════════════════════════════════════════════════════╝${NC}"
 echo ""
@@ -28,7 +28,14 @@ if [ ! -d "$TARGET_DIR" ]; then
     exit 1
 fi
 
-# Check if CLAUDE.md exists
+# Check if curl is available
+if ! command -v curl >/dev/null 2>&1; then
+    echo -e "${RED}❌ Error: curl is required but not installed${NC}"
+    exit 1
+fi
+
+# Download and install workflow rules
+echo -e "${GREEN}📋 Installing workflow rules...${NC}"
 if [ -f "$TARGET_DIR/CLAUDE.md" ]; then
     echo -e "${YELLOW}📋 Found existing CLAUDE.md, appending Vibespec workflow rules...${NC}"
     
@@ -39,36 +46,40 @@ if [ -f "$TARGET_DIR/CLAUDE.md" ]; then
         # Add two newlines and append workflow rules
         echo "" >> "$TARGET_DIR/CLAUDE.md"
         echo "" >> "$TARGET_DIR/CLAUDE.md"
-        cat "$SCRIPT_DIR/workflow-rules.md" >> "$TARGET_DIR/CLAUDE.md"
+        curl -sSL "$REPO_URL/workflow-rules.md" >> "$TARGET_DIR/CLAUDE.md"
         echo -e "${GREEN}✅ Workflow rules appended to CLAUDE.md${NC}"
     fi
 else
     echo -e "${GREEN}📋 Creating new CLAUDE.md with Vibespec workflow...${NC}"
-    cp "$SCRIPT_DIR/CLAUDE.md" "$TARGET_DIR/"
+    curl -sSL "$REPO_URL/CLAUDE.md" > "$TARGET_DIR/CLAUDE.md"
 fi
 
-# Always copy/update WORKFLOW.md
+# Download WORKFLOW.md
 echo -e "${GREEN}📄 Installing WORKFLOW.md...${NC}"
-cp "$SCRIPT_DIR/WORKFLOW.md" "$TARGET_DIR/"
+curl -sSL "$REPO_URL/WORKFLOW.md" > "$TARGET_DIR/WORKFLOW.md"
 
 # Set up .claude directory and hooks
 echo -e "${GREEN}⚙️  Setting up Claude hooks...${NC}"
 mkdir -p "$TARGET_DIR/.claude/hooks"
 
-# Check if .claude/settings.json exists
+# Download settings.json
 if [ -f "$TARGET_DIR/.claude/settings.json" ]; then
     echo -e "${YELLOW}⚠️  Found existing .claude/settings.json${NC}"
-    echo -e "${YELLOW}   Please manually merge hooks from:${NC}"
-    echo -e "${YELLOW}   $SCRIPT_DIR/.claude/settings.json${NC}"
+    echo -e "${YELLOW}   Please manually merge hooks from the downloaded file${NC}"
+    curl -sSL "$REPO_URL/.claude/settings.json" > "$TARGET_DIR/.claude/settings.json.vibespec"
+    echo -e "${YELLOW}   Saved as .claude/settings.json.vibespec${NC}"
 else
-    cp "$SCRIPT_DIR/.claude/settings.json" "$TARGET_DIR/.claude/"
+    curl -sSL "$REPO_URL/.claude/settings.json" > "$TARGET_DIR/.claude/settings.json"
 fi
 
-# Copy hook scripts
-cp "$SCRIPT_DIR/.claude/hooks/"*.sh "$TARGET_DIR/.claude/hooks/" 2>/dev/null || true
+# Download hook scripts
+echo -e "${GREEN}📥 Downloading hook scripts...${NC}"
+curl -sSL "$REPO_URL/.claude/hooks/enforce-specs.sh" > "$TARGET_DIR/.claude/hooks/enforce-specs.sh"
+curl -sSL "$REPO_URL/.claude/hooks/check-workflow.sh" > "$TARGET_DIR/.claude/hooks/check-workflow.sh"
+curl -sSL "$REPO_URL/.claude/hooks/update-docs.sh" > "$TARGET_DIR/.claude/hooks/update-docs.sh"
 
 # Make hooks executable
-chmod +x "$TARGET_DIR/.claude/hooks/"*.sh 2>/dev/null || true
+chmod +x "$TARGET_DIR/.claude/hooks/"*.sh
 
 # Create specs directory
 if [ ! -d "$TARGET_DIR/specs" ]; then
@@ -76,16 +87,17 @@ if [ ! -d "$TARGET_DIR/specs" ]; then
     mkdir -p "$TARGET_DIR/specs"
 fi
 
-# Optional: Copy example specs
+# Optional: Download example specs
 echo -e "${YELLOW}❓ Would you like to include example specs? (y/n) ${NC}"
 read -p "   " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    if [ -d "$SCRIPT_DIR/examples/simple-api/specs/user-auth" ]; then
-        echo -e "${GREEN}📝 Copying example specs...${NC}"
-        cp -r "$SCRIPT_DIR/examples/simple-api/specs/user-auth" "$TARGET_DIR/specs/example-user-auth"
-        echo -e "${GREEN}✅ Example specs added to specs/example-user-auth/${NC}"
-    fi
+    echo -e "${GREEN}📝 Downloading example specs...${NC}"
+    mkdir -p "$TARGET_DIR/specs/example-user-auth"
+    curl -sSL "$REPO_URL/examples/simple-api/specs/user-auth/requirements.md" > "$TARGET_DIR/specs/example-user-auth/requirements.md"
+    curl -sSL "$REPO_URL/examples/simple-api/specs/user-auth/design.md" > "$TARGET_DIR/specs/example-user-auth/design.md"
+    curl -sSL "$REPO_URL/examples/simple-api/specs/user-auth/tasks.md" > "$TARGET_DIR/specs/example-user-auth/tasks.md"
+    echo -e "${GREEN}✅ Example specs added to specs/example-user-auth/${NC}"
 fi
 
 echo ""
@@ -113,3 +125,6 @@ echo "   - Check specs/ directory for your specifications"
 echo "   - Visit https://github.com/frankekn/vibespec"
 echo ""
 echo -e "${BLUE}🔥 The workflow is now ENFORCED - Claude cannot skip steps!${NC}"
+echo ""
+echo -e "${GREEN}🚀 One-line install command for future use:${NC}"
+echo -e "${BLUE}   curl -sSL https://raw.githubusercontent.com/frankekn/vibespec/main/remote-install.sh | bash${NC}"
