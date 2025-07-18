@@ -1,10 +1,36 @@
-# Vibespec
+<div align="center">
 
-A specs-first development workflow for Claude Code that ensures quality through structured planning before implementation.
+```
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║                              V I B E S P E C                                 ║
+║                                                                              ║
+║                   Specs-First Development Workflow                           ║
+║                          for Claude Code                                     ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+```
 
-> **Inspired by Amazon's Kiro IDE** - bringing enterprise-grade specs-first workflow to Claude Code
+<br>
 
-## 🚀 Quick Start
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](https://github.com/frankekn/vibespec)
+[![Inspired by](https://img.shields.io/badge/inspired%20by-Amazon%20Kiro%20IDE-orange.svg)](https://github.com/frankekn/vibespec)
+
+**Transform your development process with enforced planning before implementation**
+
+---
+
+**[Getting Started](docs/GETTING_STARTED.md)** • 
+**[Documentation](docs/)** • 
+**[Examples](examples/)** • 
+**[Contributing](CONTRIBUTING.md)**
+
+---
+
+</div>
+
+## Quick Start
 
 ### Installation Options
 
