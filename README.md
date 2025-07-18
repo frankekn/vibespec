@@ -1,32 +1,39 @@
 <div align="center">
 
-```
-╔══════════════════════════════════════════════════════════════════════════════╗
-║                                                                              ║
-║                              V I B E S P E C                                 ║
-║                                                                              ║
-║                   Specs-First Development Workflow                           ║
-║                          for Claude Code                                     ║
-║                                                                              ║
-╚══════════════════════════════════════════════════════════════════════════════╝
-```
+<pre>
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+                        ██╗   ██╗██╗██████╗ ███████╗███████╗██████╗ ███████╗ ██████╗
+                        ██║   ██║██║██╔══██╗██╔════╝██╔════╝██╔══██╗██╔════╝██╔════╝
+                        ██║   ██║██║██████╔╝█████╗  ███████╗██████╔╝█████╗  ██║     
+                        ╚██╗ ██╔╝██║██╔══██╗██╔══╝  ╚════██║██╔═══╝ ██╔══╝  ██║     
+                         ╚████╔╝ ██║██████╔╝███████╗███████║██║     ███████╗╚██████╗
+                          ╚═══╝  ╚═╝╚═════╝ ╚══════╝╚══════╝╚═╝     ╚══════╝ ╚═════╝
+
+                              S P E C S - F I R S T   D E V E L O P M E N T
+                                        F O R   C L A U D E   C O D E
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+</pre>
 
 <br>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](https://github.com/frankekn/vibespec)
-[![Inspired by](https://img.shields.io/badge/inspired%20by-Amazon%20Kiro%20IDE-orange.svg)](https://github.com/frankekn/vibespec)
+[![License: MIT](https://img.shields.io/badge/License-MIT-2e86de.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/Version-2.0.0-10b981.svg)](https://github.com/frankekn/vibespec)
+[![Inspired by](https://img.shields.io/badge/Inspired%20by-Amazon%20Kiro%20IDE-e67e22.svg)](https://github.com/frankekn/vibespec)
+
+<br>
 
 **Transform your development process with enforced planning before implementation**
 
----
+<br>
 
-**[Getting Started](docs/GETTING_STARTED.md)** • 
-**[Documentation](docs/)** • 
-**[Examples](examples/)** • 
-**[Contributing](CONTRIBUTING.md)**
+[**Getting Started**](docs/GETTING_STARTED.md) · 
+[**Documentation**](docs/) · 
+[**Examples**](examples/) · 
+[**Contributing**](CONTRIBUTING.md)
 
----
+<br>
 
 </div>
 
