@@ -1,6 +1,10 @@
 #!/bin/bash
 # Check if workflow is being followed - BLOCKING VERSION
 
+# Exit on any error
+set -e
+set -o pipefail
+
 # Check if WORKFLOW.md exists
 if [ ! -f "WORKFLOW.md" ]; then
   echo "⚠️  Missing WORKFLOW.md file!"
@@ -62,8 +66,8 @@ if [[ "$TOOL_PATH" =~ \.(js|jsx|ts|tsx|py|go|java|rs|rb|php|swift|kt|scala|c|cpp
   
   # Check if there are incomplete specs
   if [ -d "specs" ]; then
-    for spec_dir in specs/*/; do
-      if [ -d "$spec_dir" ]; then
+    # Use find to get all subdirectories in specs/
+    for spec_dir in $(find specs -mindepth 1 -maxdepth 1 -type d); do
         feature_name=$(basename "$spec_dir")
         
         # Check if all required files exist
@@ -87,7 +91,6 @@ if [[ "$TOOL_PATH" =~ \.(js|jsx|ts|tsx|py|go|java|rs|rb|php|swift|kt|scala|c|cpp
           echo "📋 Complete specs/$feature_name/tasks.md first"
           exit 1
         fi
-      fi
     done
   fi
 fi

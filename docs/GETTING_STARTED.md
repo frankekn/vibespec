@@ -19,6 +19,17 @@ Vibespec is a development workflow system for Claude Code that enforces planning
 - Git (recommended)
 - Bash shell (for installation script)
 
+### Platform Requirements
+
+- **macOS**: No additional requirements
+- **Linux**: No additional requirements  
+- **Windows**: Requires one of:
+  - Windows Subsystem for Linux (WSL) - Recommended
+  - Git Bash - Comes with Git for Windows
+  - Cygwin - Alternative option
+
+⚠️ **Windows Note**: Native PowerShell/CMD is not supported. The hooks use bash scripts that require a Unix-like environment.
+
 ### Quick Install
 
 1. Clone the Vibespec repository:

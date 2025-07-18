@@ -1,6 +1,10 @@
 #!/bin/bash
 # Approval gate enforcement for Vibespec workflow
 
+# Exit on any error
+set -e
+set -o pipefail
+
 # This hook checks if the user has approved the previous step before allowing the next step
 
 # Extract the current workflow step from the user prompt
@@ -23,7 +27,7 @@ if [ -n "$CURRENT_STEP" ]; then
     case "$CURRENT_STEP" in
         "design")
             # Check if requirements.md exists
-            if [ ! -f specs/*/requirements.md ]; then
+            if ! find specs -name "requirements.md" -type f 2>/dev/null | grep -q .; then
                 echo "🛑 APPROVAL GATE: DESIGN STEP"
                 echo "❌ Cannot create design.md without approved requirements.md"
                 echo "📋 Create and get approval for requirements.md first"
@@ -41,7 +45,7 @@ if [ -n "$CURRENT_STEP" ]; then
             
         "tasks")
             # Check if design.md exists
-            if [ ! -f specs/*/design.md ]; then
+            if ! find specs -name "design.md" -type f 2>/dev/null | grep -q .; then
                 echo "🛑 APPROVAL GATE: TASKS STEP"
                 echo "❌ Cannot create tasks.md without approved design.md"
                 echo "📋 Create and get approval for design.md first"
@@ -59,7 +63,11 @@ if [ -n "$CURRENT_STEP" ]; then
             
         "implementation")
             # Check if all spec files exist
-            if [ ! -f specs/*/requirements.md ] || [ ! -f specs/*/design.md ] || [ ! -f specs/*/tasks.md ]; then
+            has_requirements=$(find specs -name "requirements.md" -type f 2>/dev/null | grep -c . || echo 0)
+            has_design=$(find specs -name "design.md" -type f 2>/dev/null | grep -c . || echo 0)
+            has_tasks=$(find specs -name "tasks.md" -type f 2>/dev/null | grep -c . || echo 0)
+            
+            if [ "$has_requirements" -eq 0 ] || [ "$has_design" -eq 0 ] || [ "$has_tasks" -eq 0 ]; then
                 echo "🛑 APPROVAL GATE: IMPLEMENTATION STEP"
                 echo "❌ Cannot start implementation without complete specifications"
                 echo "📋 All spec files (requirements.md, design.md, tasks.md) must exist and be approved"

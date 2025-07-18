@@ -25,7 +25,7 @@ echo -e "${GREEN}📁 Created test directory: $TEST_DIR${NC}"
 
 # Install Vibespec
 echo -e "${GREEN}🚀 Installing Vibespec...${NC}"
-../install.sh .
+echo "n" | ../install.sh .
 
 echo ""
 echo -e "${BLUE}🧪 RUNNING WORKFLOW TESTS${NC}"
@@ -82,7 +82,7 @@ fi
 echo -e "${YELLOW}Test 6: Incomplete specs blocking${NC}"
 mkdir -p specs/test-feature
 echo "# Test requirements" > specs/test-feature/requirements.md
-export TOOL_PATH="src/test.js"
+export TOOL_PATH="src/app.js"
 if .claude/hooks/check-workflow.sh; then
     echo -e "${RED}❌ Hook should have blocked coding with incomplete specs${NC}"
     exit 1
@@ -94,7 +94,7 @@ fi
 echo -e "${YELLOW}Test 7: Complete specs allowing coding${NC}"
 echo "# Test design" > specs/test-feature/design.md
 echo "# Test tasks" > specs/test-feature/tasks.md
-export TOOL_PATH="src/test.js"
+export TOOL_PATH="src/app.js"
 if .claude/hooks/check-workflow.sh; then
     echo -e "${GREEN}✅ Hook allows coding with complete specs${NC}"
 else

@@ -2,7 +2,9 @@
 # Vibespec Installation Script
 # https://github.com/frankekn/vibespec
 
-set -e
+set -e # Exit on error
+set -u # Exit on undefined variable
+set -o pipefail # Exit on pipe failure
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -22,10 +24,15 @@ echo -e "${BLUE}╚════════════════════�
 echo ""
 echo -e "${GREEN}🚀 Installing Vibespec to: ${NC}$TARGET_DIR"
 
+# Error handler
+error_exit() {
+    echo -e "${RED}❌ Error: $1${NC}" >&2
+    exit 1
+}
+
 # Check if target directory exists
 if [ ! -d "$TARGET_DIR" ]; then
-    echo -e "${RED}❌ Error: Target directory does not exist: $TARGET_DIR${NC}"
-    exit 1
+    error_exit "Target directory does not exist: $TARGET_DIR"
 fi
 
 # Check if CLAUDE.md exists

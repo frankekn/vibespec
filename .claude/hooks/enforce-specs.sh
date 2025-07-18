@@ -1,6 +1,10 @@
 #!/bin/bash
 # Enforce specs-first development - BLOCKING VERSION
 
+# Exit on any error
+set -e
+set -o pipefail
+
 # Check if user is asking to add/implement features
 if [[ "$USER_PROMPT" =~ (add|implement|create|build|develop|make).*(feature|functionality|component|system|api|endpoint) ]]; then
   
@@ -40,8 +44,8 @@ if [[ "$USER_PROMPT" =~ (code|implement|start|begin).*(coding|development|implem
     exit 1
   fi
   
-  # Check if there are any spec files
-  if [ ! -f specs/*/requirements.md ]; then
+  # Check if there are any spec files using find
+  if ! find specs -name "requirements.md" -type f 2>/dev/null | grep -q .; then
     echo "🛑 NO REQUIREMENTS FOUND"
     echo "❌ Cannot start coding without approved requirements.md"
     echo "📋 Create specs/{feature}/requirements.md first"
@@ -49,7 +53,7 @@ if [[ "$USER_PROMPT" =~ (code|implement|start|begin).*(coding|development|implem
   fi
   
   # Check if design.md exists
-  if [ ! -f specs/*/design.md ]; then
+  if ! find specs -name "design.md" -type f 2>/dev/null | grep -q .; then
     echo "🛑 NO DESIGN FOUND"
     echo "❌ Cannot start coding without approved design.md"
     echo "📋 Create specs/{feature}/design.md first"
@@ -57,7 +61,7 @@ if [[ "$USER_PROMPT" =~ (code|implement|start|begin).*(coding|development|implem
   fi
   
   # Check if tasks.md exists
-  if [ ! -f specs/*/tasks.md ]; then
+  if ! find specs -name "tasks.md" -type f 2>/dev/null | grep -q .; then
     echo "🛑 NO TASKS FOUND"
     echo "❌ Cannot start coding without approved tasks.md"
     echo "📋 Create specs/{feature}/tasks.md first"

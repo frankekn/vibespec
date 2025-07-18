@@ -107,6 +107,12 @@ Claude: 🛑 VIBESPEC WORKFLOW ENFORCEMENT
 - [Hooks Guide](docs/HOOKS_GUIDE.md) - Understanding the enforcement system
 - [Customization](docs/CUSTOMIZATION.md) - Adapting to your needs
 
+## 🖥️ Platform Support
+
+- ✅ **macOS**: Fully supported
+- ✅ **Linux**: Fully supported  
+- ⚠️ **Windows**: Requires WSL or Git Bash (bash scripts only)
+
 ## 🔧 Installation Time
 
 - **One-command install**: < 30 seconds

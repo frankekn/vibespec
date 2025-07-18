@@ -1,6 +1,10 @@
 #!/bin/bash
 # Documentation update reminder and workflow compliance check
 
+# Exit on any error
+set -e
+set -o pipefail
+
 # Only process source file changes
 if [[ "$TOOL_PATH" =~ \.(js|jsx|ts|tsx|py|go|java|rs|rb|php|swift|kt|scala|c|cpp|h|hpp|cs)$ ]]; then
   
@@ -12,15 +16,14 @@ if [[ "$TOOL_PATH" =~ \.(js|jsx|ts|tsx|py|go|java|rs|rb|php|swift|kt|scala|c|cpp
   # Check if this code change has corresponding specs
   SPEC_FOUND=false
   if [ -d "specs" ]; then
-    for spec_dir in specs/*/; do
-      if [ -d "$spec_dir" ]; then
-        # Check if all required spec files exist
-        if [ -f "$spec_dir/requirements.md" ] && [ -f "$spec_dir/design.md" ] && [ -f "$spec_dir/tasks.md" ]; then
-          SPEC_FOUND=true
-          break
-        fi
+    # Use find to get all subdirectories in specs/
+    while IFS= read -r spec_dir; do
+      # Check if all required spec files exist
+      if [ -f "$spec_dir/requirements.md" ] && [ -f "$spec_dir/design.md" ] && [ -f "$spec_dir/tasks.md" ]; then
+        SPEC_FOUND=true
+        break
       fi
-    done
+    done < <(find specs -mindepth 1 -maxdepth 1 -type d 2>/dev/null || true)
   fi
   
   if [ "$SPEC_FOUND" = false ]; then
