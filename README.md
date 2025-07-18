@@ -2,6 +2,8 @@
 
 A specs-first development workflow for Claude Code that ensures quality through structured planning before implementation.
 
+> **Inspired by Amazon's Kiro IDE** - bringing enterprise-grade specs-first workflow to Claude Code
+
 ## 🚀 Quick Start
 
 ### Installation Options
@@ -128,6 +130,12 @@ We welcome contributions! Please follow the Vibespec workflow when adding featur
 
 MIT License - see [LICENSE](LICENSE) file
 
+## 👤 Author
+
+**Frank Yang**  
+Email: vibespecs@gmail.com
+
 ---
 
-Made with ❤️ for the Claude Code community
+Made with ❤️ for the Claude Code community  
+Inspired by Amazon's Kiro IDE
